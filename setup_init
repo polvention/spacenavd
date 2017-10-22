@@ -22,6 +22,24 @@ setup_sysv_init() {
 	fi
 }
 
+setup_systemd_init() {
+	if [ "$1" = 'remove' ]; then
+        systemctl disable spacenav.service
+        systemctl disable dev-hidraw3.device
+        rm -rf ~/.local/share/systemd/dev-hidraw3.device
+        rm -rf ~/.local/share/systemd/spacenav.service
+        rm -rf /etc/udev/rules.d/90-spacenav.rules
+        systemctl daemon-reload
+    else
+        install -m 664 systemd/dev-hidraw3.device ~/.local/share/systemd/
+        install -m 664 systemd/spacenav.service ~/.local/share/systemd/
+        install -m 755 90-spacenav.rules /etc/udev/rules.d/
+        systemctl enable ~/.local/share/systemd/spacenav.service
+        systemctl enable ~/.local/share/systemd/dev-hidraw3.device
+        systemctl daemon-reload
+    fi
+}
+
 setup_bsd_init() {
 	echo 'setting up bsd init'
 	echo "BSD init setup not implemented yet, you'll have to do it manually."
@@ -37,6 +55,11 @@ if [ "$1" = '--no-install' ]; then
 	echo If you wish to attempt and install an init script automatically, run ./setup_init
 	echo
 	exit 0
+fi
+
+if [ -d /etc/systemd ]; then
+    setup_systemd_init $*
+    exit 0
 fi
 
 if [ -d /etc/init.d -a -d /etc/rc0.d ]; then

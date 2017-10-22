@@ -1,0 +1,5 @@
+*.o
+*.d
+Makefile
+spacenavd
+src/config.h

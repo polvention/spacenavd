@@ -1,0 +1,15 @@
+[Unit]
+Description=SpaceNavigator 3Dconnexion Daemon
+DefaultDependencies=no
+BindsTo=dev-hidraw3.device
+After=dev-hidraw3.device
+Wants=dev-hidraw3.device
+
+[Service]
+User=titanum
+Group=titanum
+Type=forking
+ExecStart=/usr/local/bin/spacenavd -v
+
+[Install]
+WantedBy=multi-user.target
