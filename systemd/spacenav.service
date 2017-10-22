@@ -6,8 +6,8 @@ After=dev-hidraw3.device
 Wants=dev-hidraw3.device
 
 [Service]
-User=titanum
-Group=titanum
+User=__USER__
+Group=__GROUP__
 Type=forking
 ExecStart=/usr/local/bin/spacenavd -v
 

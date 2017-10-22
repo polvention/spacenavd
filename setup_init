@@ -34,6 +34,8 @@ setup_systemd_init() {
         install -m 664 systemd/dev-hidraw3.device ~/.local/share/systemd/
         install -m 664 systemd/spacenav.service ~/.local/share/systemd/
         install -m 755 90-spacenav.rules /etc/udev/rules.d/
+        sed -i "s/__USER__/$SUDO_USER/g" ~/.local/share/systemd/spacenav.service
+        sed -i "s/__GROUP__/$SUDO_USER/g" ~/.local/share/systemd/spacenav.service
         systemctl enable ~/.local/share/systemd/spacenav.service
         systemctl enable ~/.local/share/systemd/dev-hidraw3.device
         systemctl daemon-reload
